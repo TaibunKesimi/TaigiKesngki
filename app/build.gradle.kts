@@ -9,12 +9,12 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.darkempire78.opencalculator"
+        applicationId = "app.taigi.kesngki"
         resourceConfigurations += listOf("ar", "az", "be", "bn", "bs", "cs", "de", "el", "es", "fa", "fr", "hi", "hr", "hu", "in", "it", "ja", "kn", "mk", "ml", "nb-rNO", "nl", "or", "pl", "pt-rBR", "ro", "ru", "sat", "sr", "sv", "tr", "uk", "vi", "zh-rCN", "zh-rHK", "zh-rTW")
         minSdk = 21
         targetSdk = 35
-        versionCode = 54
-        versionName = "3.2.1"
+        versionCode = 1
+        versionName = "0.9.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

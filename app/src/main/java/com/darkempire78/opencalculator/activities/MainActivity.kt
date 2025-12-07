@@ -34,6 +34,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.darkempire78.opencalculator.MyPreferences
 import com.darkempire78.opencalculator.R
+import android.view.MotionEvent
+import com.darkempire78.opencalculator.TaigiSoundPlayer
 import com.darkempire78.opencalculator.TextSizeAdjuster
 import com.darkempire78.opencalculator.Themes
 import com.darkempire78.opencalculator.calculator.Calculator
@@ -93,6 +95,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var historyAdapter: HistoryAdapter
     private lateinit var historyLayoutMgr: LinearLayoutManager
+    
+    // Taigi sound player for number and operator sounds
+    private lateinit var taigiSoundPlayer: TaigiSoundPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -230,6 +235,12 @@ class MainActivity : AppCompatActivity() {
 
         // Focus by default
         binding.input.requestFocus()
+        
+        // Initialize Taigi sound player
+        taigiSoundPlayer = TaigiSoundPlayer(this)
+        
+        // Setup touch listeners for immediate sound playback
+        setupTouchListeners()
 
         // Makes the input take the whole width of the screen by default
         val screenWidthPX = resources.displayMetrics.widthPixels
@@ -750,7 +761,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun keyDigitPadMappingToDisplay(view: View) {
-        updateDisplay(view, (view as Button).text as String)
+        val buttonText = (view as Button).text.toString()
+        updateDisplay(view, buttonText)
     }
 
     @SuppressLint("SetTextI18n")
@@ -1443,6 +1455,71 @@ class MainActivity : AppCompatActivity() {
 
             // Return the insets to allow other listeners to consume them
             insets
+        }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        // Release Taigi sound player resources
+        taigiSoundPlayer.release()
+    }
+
+    /**
+     * Setup touch listeners for number and operator buttons
+     * to play sound immediately on touch down (before UI animation)
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupTouchListeners() {
+        // Number buttons
+        val numberButtons = listOf(
+            binding.zeroButton, binding.oneButton, binding.twoButton,
+            binding.threeButton, binding.fourButton, binding.fiveButton,
+            binding.sixButton, binding.sevenButton, binding.eightButton,
+            binding.nineButton
+        )
+        
+        numberButtons.forEach { button ->
+            button.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    (v as? Button)?.text?.toString()?.toIntOrNull()?.let { digit ->
+                        taigiSoundPlayer.playNumber(digit)
+                    }
+                }
+                false // Let the event propagate to onClick
+            }
+        }
+        
+        // Operator buttons
+        val operatorButtons = mapOf(
+            binding.addButton to "+",
+            binding.subtractButton to "-",
+            binding.multiplyButton to "×",
+            binding.divideButton to "÷"
+        )
+        
+        operatorButtons.forEach { (button, operator) ->
+            button.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    taigiSoundPlayer.playOperator(operator)
+                }
+                false // Let the event propagate to onClick
+            }
+        }
+        
+        // Point button
+        binding.pointButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                taigiSoundPlayer.playDot()
+            }
+            false
+        }
+        
+        // Equals button
+        binding.equalsButton.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                taigiSoundPlayer.playEquals()
+            }
+            false
         }
     }
 }
