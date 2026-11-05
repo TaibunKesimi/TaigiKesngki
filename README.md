@@ -5,7 +5,7 @@
 # OpenCalc
 
 ### A simple and beautiful calculator for Android.
-#### Downloaded more than 250 000 times.
+#### Downloaded more than 300 000 times.
 
 <a href="https://github.com/Darkempire78/OpenCalc/releases/latest">
       <img alt="Latest release" src="https://img.shields.io/github/v/release/Darkempire78/OpenCalc.svg?logo=github&style=for-the-badge">
@@ -121,9 +121,4 @@ OpenCalc doesn't use mXparser anymore since the v2.0.0 for two main reasons:
   <img alt="List of contributors to this repository" src="https://contrib.rocks/image?repo=Darkempire78/OpenCalc" />
 </a>
 
-# Repository View Counter
-
-<div align='center'><a href='https://www.websitecounterfree.com'><img src='https://www.websitecounterfree.com/c.php?d=9&id=54724&s=1' border='0' alt='Free Website Counter'></a></div>
-<!-- View counter added on June 2, 2024 -->
-</div>
 </div>
